@@ -109,17 +109,14 @@ class Info_Main(QWidget):
     def initUI(self):
         self.setGeometry(300, 300, 250, 150)
         self.setWindowTitle('И еще немного...')
-
         self.pushButton = QPushButton(self)
         self.pushButton.setGeometry(QRect(160, 115, 80, 20))
         self.pushButton.setText("Далее")
         self.pushButton.clicked.connect(self.next)
-
         self.pushButton1 = QPushButton(self)
         self.pushButton1.setGeometry(QRect(80, 115, 80, 20))
         self.pushButton1.setText("Назад")
         self.pushButton1.clicked.connect(self.back)
-
         self.spinBox = QSpinBox(self)
         self.spinBox.setGeometry(QRect(140, 20, 70, 24))
         self.spinBox.setMaximum(220.0)
@@ -142,7 +139,7 @@ class Info_Main(QWidget):
 
     def next(self):
         global imt
-        imt = round(int(self.spinBox1.value()) / ((int(self.spinBox.value())/100)**2), 1)
+        imt = round(float(self.spinBox1.value()) / ((int(self.spinBox.value())/100)**2), 1)
         self.okno = Down()
         self.okno.show()
         self.close()
@@ -197,6 +194,7 @@ class IMT(QWidget):
         self.bnt = QPushButton(self)
         self.bnt.setGeometry(QRect(30, 110, 200, 40))
         self.bnt.setText("Рассчитать программу")
+        self.bnt.clicked.connect(self.click)
         if imt < 18.5:
             self.label1.setText('Ваш ИМТ ниже среднего!\nСоветуем набрать вес!')
         elif 25.0 >= imt >= 18.5:
@@ -216,9 +214,157 @@ class IMT(QWidget):
                                          'жира и мало мышечной массы, что является признаком '
                                          '"скрытого ожирения".')
 
+    def click(self):
+        self.ok = Programm()
+        self.ok.show()
+        self.close()
+
+
+class Programm(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        self.setGeometry(300, 300, 250, 175)
+        self.setWindowTitle('Ваша программа!')
+        self.hand = QPushButton('Тренировка рук', self)
+        self.hand.setGeometry(QRect(0, 0, 250, 30))
+        self.hand.setStyleSheet("background-color: #899")
+        self.foot = QPushButton('Тренировка ног', self)
+        self.foot.setGeometry(QRect(0, 30, 250, 35))
+        self.foot.setStyleSheet("background-color: #886")
+        self.press = QPushButton('Тренировка пресса', self)
+        self.press.setGeometry(QRect(0, 65, 250, 35))
+        self.press.setStyleSheet("background-color: #899")
+        self.body = QPushButton('Тренировка всего тела', self)
+        self.body.setGeometry(QRect(0, 95, 250, 35))
+        self.body.setStyleSheet("background-color: #886")
+        self.bnt = QPushButton('Выход', self)
+        self.bnt.setGeometry(QRect(130, 135, 100, 30))
+        self.bnt.clicked.connect(self.exit)
+        self.hand.clicked.connect(self.Hand)
+        self.foot.clicked.connect(self.Foot)
+        self.press.clicked.connect(self.Press)
+        self.body.clicked.connect(self.Body)
+
+    def Hand(self):
+        self.ok = Tr_Hand()
+        self.ok.show()
+        self.close()
+
+    def Foot(self):
+        self.ok = Tr_Foot()
+        self.ok.show()
+        self.close()
+
+    def Press(self):
+        self.ok = Tr_Press()
+        self.ok.show()
+        self.close()
+
+    def Body(self):
+        self.ok = Tr_Body()
+        self.ok.show()
+        self.close()
+
+    def exit(self):
+        buttonReply = QMessageBox.question(self, 'Точно?', "Вы точно хотите выйти?",
+                                           QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if buttonReply == QMessageBox.Yes:
+            self.close()
+
+
+class Tr_Hand(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        global imt
+        self.setGeometry(300, 300, 250, 150)
+        self.setWindowTitle('Тренировка рук.')
+        self.bnt = QPushButton('Назад', self)
+        self.bnt.setGeometry(QRect(150, 120, 100, 30))
+        self.bnt.clicked.connect(self.exit)
+
+    def exit(self):
+        buttonReply = QMessageBox.question(self, 'Точно?', "Вы точно хотите закончить тренировку?",
+                                           QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if buttonReply == QMessageBox.Yes:
+            self.ok = Programm()
+            self.ok.show()
+            self.close()
+
+
+class Tr_Foot(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        global imt
+        self.setGeometry(300, 300, 250, 150)
+        self.setWindowTitle('Тренировка ног.')
+        self.bnt = QPushButton('Назад', self)
+        self.bnt.setGeometry(QRect(150, 120, 100, 30))
+        self.bnt.clicked.connect(self.exit)
+
+    def exit(self):
+        buttonReply = QMessageBox.question(self, 'Точно?', "Вы точно хотите закончить тренировку?",
+                                           QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if buttonReply == QMessageBox.Yes:
+            self.ok = Programm()
+            self.ok.show()
+            self.close()
+
+
+class Tr_Press(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        global imt
+        self.setGeometry(300, 300, 250, 150)
+        self.setWindowTitle('Тренировка пресса.')
+        self.bnt = QPushButton('Назад', self)
+        self.bnt.setGeometry(QRect(150, 120, 100, 30))
+        self.bnt.clicked.connect(self.exit)
+
+    def exit(self):
+        buttonReply = QMessageBox.question(self, 'Точно?', "Вы точно хотите закончить тренировку?",
+                                           QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if buttonReply == QMessageBox.Yes:
+            self.ok = Programm()
+            self.ok.show()
+            self.close()
+
+
+class Tr_Body(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        global imt
+        self.setGeometry(300, 300, 250, 150)
+        self.setWindowTitle('Тренировка всего тела.')
+        self.bnt = QPushButton('Назад', self)
+        self.bnt.setGeometry(QRect(150, 120, 100, 30))
+        self.bnt.clicked.connect(self.exit)
+
+    def exit(self):
+        buttonReply = QMessageBox.question(self, 'Точно?', "Вы точно хотите закончить тренировку?",
+                                           QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if buttonReply == QMessageBox.Yes:
+            self.ok = Programm()
+            self.ok.show()
+            self.close()
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = Entry()
+    ex = Tr_Foot()
     ex.show()
     sys.exit(app.exec_())
