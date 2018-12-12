@@ -98,7 +98,7 @@ class Info(QWidget):
             self.close()
 
     def no(self):
-        QMessageBox.about(self, "Title", 'Вы не все ввели!')
+        QMessageBox.about(self, "Ошибка!", 'Вы не все ввели!')
 
 
 class Info_Main(QWidget):
@@ -281,12 +281,50 @@ class Tr_Hand(QWidget):
         self.initUI()
 
     def initUI(self):
-        global imt
-        self.setGeometry(300, 300, 250, 150)
+        self.setGeometry(300, 300, 370, 180)
         self.setWindowTitle('Тренировка рук.')
         self.bnt = QPushButton('Назад', self)
-        self.bnt.setGeometry(QRect(150, 120, 100, 30))
+        self.bnt.setGeometry(QRect(170, 130, 100, 30))
         self.bnt.clicked.connect(self.exit)
+        self.first = QLabel(self)
+        self.first.setGeometry(QRect(75, 20, 150, 30))
+        self.first.setText('Попеременный подъем\nгантелей стоя')
+        self.kol_1 = QPushButton(self)
+        self.kol_1.setGeometry(QRect(260, 25, 100, 30))
+        self.kol_1.setText('1 минута')
+        self.kol_1.clicked.connect(self.time)
+        self.what_1 = QPushButton('?', self)
+        self.what_1.setGeometry(QRect(10, 20, 30, 30))
+        self.second = QLabel(self)
+        self.second.setGeometry(QRect(75, 80, 200, 30))
+        self.second.setText('Концентрированное\nсгибание рук сидя')
+        self.kol_2 = QLabel(self)
+        self.kol_2.setGeometry(QRect(260, 80, 100, 30))
+        self.kol_2.setText('20 раз')
+        self.what_2 = QPushButton('?', self)
+        self.what_1.setStyleSheet("background-color: grey")
+        self.what_2.setStyleSheet("background-color: grey")
+        self.what_2.setGeometry(QRect(10, 80, 30, 30))
+        self.what_1.clicked.connect(self.What_1)
+        self.what_2.clicked.connect(self.What_2)
+
+    def What_2(self):
+        QMessageBox.about(self, "Title", 'Исходное положение: '
+                                         'сидя на скамье, рука перпендикулярно полу, локоть чуть'
+                                         'согнут, ладонь развернута к себе. При выдохе сгибаем '
+                                         'руку и одновременно разворачиваем так, чтобы в верхней'
+                                         'точке ладонь была развернута вверх, при выдохе разгибаем'
+                                         'руку.')
+
+    def What_1(self):
+        QMessageBox.about(self, "Title", 'Исходное положение: '
+                                         'стоя, спина прогнута. На выдохе равномерно поднимаем'
+                                         'гантель одной руки, на выдохе равномерно опускаем. Затем'
+                                         'аналогично - другой рукой.')
+
+    def time(self):
+        self.ok = Timer()
+        self.ok.show()
 
     def exit(self):
         buttonReply = QMessageBox.question(self, 'Точно?', "Вы точно хотите закончить тренировку?",
@@ -296,6 +334,34 @@ class Tr_Hand(QWidget):
             self.ok.show()
             self.close()
 
+
+class Timer(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        self.pbar = QProgressBar(self)
+        self.pbar.setGeometry(30, 100, 200, 25)
+        self.timer = QBasicTimer()
+        self.timer.start(600, self)
+        self.label = QLabel(self)
+        self.label.setGeometry(QRect(50, 20, 240, 65))
+        self.label.setText("Выполняйте упражнение!")
+        self.step = 0
+        self.setGeometry(300, 300, 280, 170)
+        self.setWindowTitle('Таймер')
+
+    def timerEvent(self, e):
+        if self.step == 600:
+            self.timer.stop()
+            self.no()
+        self.step = self.step + 1
+        self.pbar.setValue(self.step)
+
+    def no(self):
+        QMessageBox.about(self, "", 'Время вышло!')
+        self.close()
 
 class Tr_Foot(QWidget):
     def __init__(self):
@@ -303,12 +369,52 @@ class Tr_Foot(QWidget):
         self.initUI()
 
     def initUI(self):
-        global imt
-        self.setGeometry(300, 300, 250, 150)
+        self.setGeometry(300, 300, 370, 180)
         self.setWindowTitle('Тренировка ног.')
         self.bnt = QPushButton('Назад', self)
-        self.bnt.setGeometry(QRect(150, 120, 100, 30))
+        self.bnt.setGeometry(QRect(170, 130, 100, 30))
         self.bnt.clicked.connect(self.exit)
+        self.first = QLabel(self)
+        self.first.setGeometry(QRect(75, 20, 150, 30))
+        self.first.setText('Выпады вперед\nс гантелями')
+        self.kol_1 = QPushButton(self)
+        self.kol_1.setGeometry(QRect(260, 25, 100, 30))
+        self.kol_1.setText('1 минута')
+        self.kol_1.clicked.connect(self.time)
+        self.what_1 = QPushButton('?', self)
+        self.what_1.setGeometry(QRect(10, 20, 30, 30))
+        self.second = QLabel(self)
+        self.second.setGeometry(QRect(75, 80, 200, 30))
+        self.second.setText('Махи ног назад\nстоя в блоке')
+        self.kol_2 = QLabel(self)
+        self.kol_2.setGeometry(QRect(260, 80, 100, 30))
+        self.kol_2.setText('35 раз')
+        self.what_2 = QPushButton('?', self)
+        self.what_2.setGeometry(QRect(10, 80, 30, 30))
+        self.what_1.setStyleSheet("background-color: grey")
+        self.what_2.setStyleSheet("background-color: grey")
+        self.what_1.clicked.connect(self.What_1)
+        self.what_2.clicked.connect(self.What_2)
+
+    def What_2(self):
+        QMessageBox.about(self, "Title", 'Исходное положение: '
+                                         'стоя на одной ноге, спина прогнута, корпус немного'
+                                         'наклонен вперед, руки зафиксированы на тренажере для'
+                                         'устойчивости. На выдохе равномерно отводим руку назад,'
+                                         'слегка выпрямляем ее в колене, задерживаем на секунду,'
+                                         'на вдохе равномерно приводим ногу в исходное положение')
+
+    def What_1(self):
+        QMessageBox.about(self, "Title", 'Исходное положение: '
+                                         'стоя, ноги вместе. При вдохе делаем шаг вперед и приседаем'
+                                         'до положения, когда обе ноги в коленях образуют угол 90'
+                                         'градусов. В нижнем положении задняя нога стоит на носке.'
+                                         'При выдохе встаем в исходное положение. Далее поочередно'
+                                         'меняем ногу.')
+
+    def time(self):
+        self.ok = Timer()
+        self.ok.show()
 
     def exit(self):
         buttonReply = QMessageBox.question(self, 'Точно?', "Вы точно хотите закончить тренировку?",
@@ -317,6 +423,7 @@ class Tr_Foot(QWidget):
             self.ok = Programm()
             self.ok.show()
             self.close()
+
 
 
 class Tr_Press(QWidget):
