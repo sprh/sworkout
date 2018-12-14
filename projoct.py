@@ -7,7 +7,7 @@ import urllib.request
 imt = 0
 
 
-class Entry(QWidget):
+class Entry(QWidget):  # первая страница, слоган, название
     def __init__(self):
         super().__init__()
         self.initUI()
@@ -33,7 +33,7 @@ class Entry(QWidget):
         self.name1 = QLabel(self)
         self.name1.setGeometry(QRect(65, 40, 250, 200))
         self.name.setFont(QFont("Helvetica", 25, QFont.Bold))
-        self.bnt = QPushButton('Начать', self)
+        self.bnt = QPushButton('Начать', self)  # перебрасывает на следующую
         self.bnt.setStyleSheet("background-color: grey")
         self.bnt.setGeometry(QRect(65, 220, 90, 40))
         self.timer = QBasicTimer()
@@ -41,12 +41,14 @@ class Entry(QWidget):
         self.timer.start(10, self)
         self.bnt.clicked.connect(self.check)
 
-    def timerEvent(self, e):
+    def timerEvent(self, e):  # название приложения 'печатается', после через некоторое время
+        # выводится слоган
         if self.step / 10 < 9 and self.step / 10 == int(self.step / 10):
             st = 'SWORKტUT'[:int(self.step / 10)]
             self.name.setText(st)
         if self.step >= 120:
-            self.name1.setText('Вам не будет никаких\nоправданий, если вы\nне будете делать\nфизические упражнения!')
+            self.name1.setText('Вам не будет никаких\nоправданий, если вы\nне будете делать\n'
+                               'физические упражнения!')
             self.name1.setFont(QFont("Times", 20, QFont.Bold))
             self.name1.setStyleSheet('color: black')
             self.but()
@@ -62,7 +64,7 @@ class Entry(QWidget):
         self.close()
 
 
-class Info(QWidget):
+class Info(QWidget):  # ифнормация о возрасте и поле пользователя
     def __init__(self):
         super().__init__()
         self.initUI()
@@ -72,7 +74,7 @@ class Info(QWidget):
         self.setWindowTitle('Введите информацию')
         self.spinBox = QSpinBox(self)
         self.spinBox.setGeometry(QRect(140, 20, 40, 24))
-        self.spinBox.setMaximum(70)
+        self.spinBox.setMaximum(70)  # ограничения по возрасту -- от 14 до 70 лет
         self.spinBox.setMinimum(14)
         self.label = QLabel(self)
         self.label.setGeometry(QRect(20, 20, 150, 20))
@@ -80,7 +82,7 @@ class Info(QWidget):
         self.label_2 = QLabel(self)
         self.label_2.setGeometry(QRect(20, 70, 85, 20))
         self.label_2.setText("Ваш пол")
-        self.radioButton = QRadioButton('Женский', self)
+        self.radioButton = QRadioButton('Женский', self)  # только 2 варианта
         self.radioButton.setGeometry(QRect(140, 80, 85, 20))
         self.radioButton_2 = QRadioButton('Мужской', self)
         self.radioButton_2.setGeometry(QRect(140, 60, 85, 20))
@@ -92,17 +94,17 @@ class Info(QWidget):
 
     def click(self):
         if not (self.radioButton.isChecked() or self.radioButton_2.isChecked()):
-            self.no()
+            self.no()  # не все ввели -- диалоговое окно
         else:
             self.ok = Info_Main()
             self.ok.show()
             self.close()
 
     def no(self):
-        QMessageBox.about(self, "Ошибка!", 'Вы не все ввели!')
+        QMessageBox.about(self, "Ошибка!", 'Вы не все ввели!')  # уведомление об ошибке
 
 
-class Info_Main(QWidget):
+class Info_Main(QWidget):  # основная информация -- рост, вес
     def __init__(self):
         super().__init__()
         self.initUI()
@@ -112,11 +114,11 @@ class Info_Main(QWidget):
         self.setWindowTitle('И еще немного...')
         self.pushButton = QPushButton(self)
         self.pushButton.setGeometry(QRect(160, 115, 80, 20))
-        self.pushButton.setText("Далее")
+        self.pushButton.setText("Далее") # переход к рассчету ИМТ
         self.pushButton.clicked.connect(self.next)
         self.pushButton1 = QPushButton(self)
         self.pushButton1.setGeometry(QRect(70, 115, 80, 20))
-        self.pushButton1.setText("Назад")
+        self.pushButton1.setText("Назад")  # переход обратно
         self.pushButton1.clicked.connect(self.back)
         self.pushButton1.setStyleSheet("background-color: grey")
         self.pushButton.setStyleSheet("background-color: grey")
@@ -135,12 +137,12 @@ class Info_Main(QWidget):
         self.spinBox1.setMaximum(250.0)
         self.spinBox1.setMinimum(40.0)
 
-    def back(self):
+    def back(self):  # переход к вводу пола и возраста
         self.ok = Info()
         self.ok.show()
         self.close()
 
-    def next(self):
+    def next(self):  # рассчет ИМТ, переход далее
         global imt
         imt = round(float(self.spinBox1.value()) / ((int(self.spinBox.value())/100)**2), 1)
         self.okno = Down()
@@ -148,7 +150,7 @@ class Info_Main(QWidget):
         self.close()
 
 
-class Down(QWidget):
+class Down(QWidget):  # загрузка
     def __init__(self):
         super().__init__()
         self.initUI()
@@ -176,7 +178,7 @@ class Down(QWidget):
         self.pbar.setValue(self.step)
 
 
-class IMT(QWidget):
+class IMT(QWidget):  # рассчет ИМТ, совет
     def __init__(self):
         super().__init__()
         self.initUI()
@@ -196,10 +198,10 @@ class IMT(QWidget):
         self.label1.setGeometry(QRect(20, 60, 200, 40))
         self.bnt = QPushButton(self)
         self.bnt.setGeometry(QRect(30, 110, 200, 30))
-        self.bnt.setText("Рассчитать программу")
+        self.bnt.setText("Рассчитать программу")  # переход к программе
         self.bnt.setStyleSheet("background-color: grey")
         self.bnt.clicked.connect(self.click)
-        if imt < 18.5:
+        if imt < 18.5:  # вывод значения, совета
             self.label1.setText('Ваш ИМТ ниже среднего!\nСоветуем набрать вес!')
         elif 25.0 >= imt >= 18.5:
             self.label1.setText('Ваш показатель ИМТ в норме,\nпоздравляем!')
@@ -210,7 +212,7 @@ class IMT(QWidget):
         else:
             self.label1.setText('Очень высокий ИМТ! Вам явно\nстоит сбросить вес!')
 
-    def what(self):
+    def what(self):  # что такое имт?
         QMessageBox.about(self, "Title", 'ИМТ: вес / рост в квадрате.\n'
                                          'Руководствуясь только показателем ИМТ, вы не можете '
                                          'определить имеющееся "скрытое ожирение". Даже при '
@@ -224,7 +226,7 @@ class IMT(QWidget):
         self.close()
 
 
-class Programm(QWidget):
+class Programm(QWidget):  # выбор тренировки
     def __init__(self):
         super().__init__()
         self.initUI()
@@ -232,7 +234,8 @@ class Programm(QWidget):
     def initUI(self):
         self.setGeometry(300, 300, 250, 175)
         self.setWindowTitle('Ваша программа!')
-        self.hand = QPushButton('Тренировка рук', self)
+        self.hand = QPushButton('Тренировка рук', self)  # выбор тренировки на соответствующую
+        # часть тела
         self.hand.setGeometry(QRect(0, 0, 250, 30))
         self.hand.setStyleSheet("background-color: #899")
         self.foot = QPushButton('Тренировка ног', self)
@@ -244,7 +247,7 @@ class Programm(QWidget):
         self.body = QPushButton('Тренировка всего тела', self)
         self.body.setGeometry(QRect(0, 95, 250, 35))
         self.body.setStyleSheet("background-color: #886")
-        self.bnt = QPushButton('Выход', self)
+        self.bnt = QPushButton('Выход', self)  # выход из приложения
         self.bnt.setGeometry(QRect(130, 135, 100, 30))
         self.bnt.setStyleSheet("background-color: grey")
         self.bnt.clicked.connect(self.exit)
@@ -253,6 +256,7 @@ class Programm(QWidget):
         self.press.clicked.connect(self.Press)
         self.body.clicked.connect(self.Body)
 
+    # при нажатии на тренироку --> переход к соответствующему окну
     def Hand(self):
         self.ok = Tr_Hand()
         self.ok.show()
@@ -273,7 +277,7 @@ class Programm(QWidget):
         self.ok.show()
         self.close()
 
-    def exit(self):
+    def exit(self):  # диалоговое окно -- выхо при положительном ответе
         buttonReply = QMessageBox.question(self, 'Точно?', "Вы точно хотите выйти?",
                                            QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if buttonReply == QMessageBox.Yes:
@@ -288,7 +292,7 @@ class Tr_Hand(QWidget):
     def initUI(self):
         self.setGeometry(300, 300, 370, 180)
         self.setWindowTitle('Тренировка рук.')
-        self.bnt = QPushButton('Назад', self)
+        self.bnt = QPushButton('Назад', self)  # переход к выбору тренировки
         self.bnt.setStyleSheet("background-color: grey")
         self.bnt.setGeometry(QRect(170, 130, 100, 30))
         self.bnt.clicked.connect(self.exit)
@@ -314,7 +318,7 @@ class Tr_Hand(QWidget):
         self.what_1.clicked.connect(self.What_1)
         self.what_2.clicked.connect(self.What_2)
 
-    def What_2(self):
+    def What_2(self):  # описание 2 упражнения
         QMessageBox.about(self, "Title", 'Исходное положение: '
                                          'сидя на скамье, рука перпендикулярно полу, локоть чуть '
                                          'согнут, ладонь развернута к себе. При выдохе сгибаем '
@@ -322,18 +326,19 @@ class Tr_Hand(QWidget):
                                          'точке ладонь была развернута вверх, при выдохе разгибаем '
                                          'руку.')
 
-    def What_1(self):
+    def What_1(self):  # описание первого упражнения
         QMessageBox.about(self, "Title", 'Исходное положение: '
                                          'стоя, спина прогнута. На выдохе равномерно поднимаем '
                                          'гантель одной руки, на выдохе равномерно опускаем. Затем '
                                          'аналогично - другой рукой.')
 
-    def time(self):
+    def time(self):  # переход к таймеру
         self.ok = Timer()
         self.ok.show()
 
     def exit(self):
-        buttonReply = QMessageBox.question(self, 'Точно?', "Вы точно хотите закончить тренировку рук?",
+        buttonReply = QMessageBox.question(self, 'Точно?', "Вы точно хотите закончить "
+                                                           "тренировку рук?",
                                            QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if buttonReply == QMessageBox.Yes:
             self.ok = Programm()
@@ -341,14 +346,18 @@ class Tr_Hand(QWidget):
             self.close()
 
 
-class Timer(QWidget):
+class Timer(QWidget):  # таймер, если упражнение на время
     def __init__(self):
         super().__init__()
         self.initUI()
 
     def initUI(self):
         self.pbar = QProgressBar(self)
-        self.pbar.setGeometry(30, 100, 200, 25)
+        self.pbar.setGeometry(30, 80, 200, 25)
+        self.name = QLabel(self)
+        self.name.setGeometry(QRect(120, 40, 250, 200))
+        self.name.setFont(QFont("Helvetica", 25, QFont.Bold))
+        self.name.setText('60')
         self.timer = QBasicTimer()
         self.timer.start(600, self)
         self.label = QLabel(self)
@@ -359,9 +368,10 @@ class Timer(QWidget):
         self.setWindowTitle('Таймер')
 
     def timerEvent(self, e):
-        if self.step == 600:
+        if self.step == 100:
             self.timer.stop()
             self.no()
+        self.name.setText(str(60 - round(self.step / 16.4 * 10)))  # обратный отсчет
         self.step = self.step + 1
         self.pbar.setValue(self.step)
 
@@ -370,7 +380,7 @@ class Timer(QWidget):
         self.close()
 
 
-class Tr_Foot(QWidget):
+class Tr_Foot(QWidget):  # для каждой тренировки похожие функции
     def __init__(self):
         super().__init__()
         self.initUI()
@@ -425,7 +435,8 @@ class Tr_Foot(QWidget):
         self.ok.show()
 
     def exit(self):
-        buttonReply = QMessageBox.question(self, 'Точно?', "Вы точно хотите закончить тренировку ног?",
+        buttonReply = QMessageBox.question(self, 'Точно?', "Вы точно хотите закончить "
+                                                           "тренировку ног?",
                                            QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if buttonReply == QMessageBox.Yes:
             self.ok = Programm()
@@ -487,7 +498,8 @@ class Tr_Press(QWidget):
         self.ok.show()
 
     def exit(self):
-        buttonReply = QMessageBox.question(self, 'Точно?', "Вы точно хотите закончить тренировку пресса?",
+        buttonReply = QMessageBox.question(self, 'Точно?', "Вы точно хотите закончить тренировку "
+                                                           "пресса?",
                                            QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if buttonReply == QMessageBox.Yes:
             self.ok = Programm()
@@ -548,7 +560,8 @@ class Tr_Body(QWidget):
         self.ok.show()
 
     def exit(self):
-        buttonReply = QMessageBox.question(self, 'Точно?', "Вы точно хотите закончить тренировку всего тела?",
+        buttonReply = QMessageBox.question(self, 'Точно?', "Вы точно хотите закончить тренировку "
+                                                           "всего тела?",
                                            QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if buttonReply == QMessageBox.Yes:
             self.ok = Programm()
@@ -558,6 +571,6 @@ class Tr_Body(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = Entry()
+    ex = Timer()
     ex.show()
     sys.exit(app.exec_())
