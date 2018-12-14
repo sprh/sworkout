@@ -14,7 +14,7 @@ class Entry(QWidget):
 
     def initUI(self):
         self.tr = False
-        self.setGeometry(500, 300, 250, 150)
+        self.setGeometry(300, 300, 250, 150)
         self.setWindowTitle('')
         url = 'http://www.krunchtoday.com/images/august2018/columnist/swetha-bhatia.jpg'
         img = urllib.request.urlopen(url).read()
@@ -246,6 +246,7 @@ class Programm(QWidget):
         self.body.setStyleSheet("background-color: #886")
         self.bnt = QPushButton('Выход', self)
         self.bnt.setGeometry(QRect(130, 135, 100, 30))
+        self.bnt.setStyleSheet("background-color: grey")
         self.bnt.clicked.connect(self.exit)
         self.hand.clicked.connect(self.Hand)
         self.foot.clicked.connect(self.Foot)
@@ -508,7 +509,7 @@ class Tr_Body(QWidget):
         self.bnt.clicked.connect(self.exit)
         self.first = QLabel(self)
         self.first.setGeometry(QRect(75, 20, 150, 30))
-        self.first.setText('Прыгающий Джек.')
+        self.first.setText('Прыгающий Джек')
         self.kol_1 = QLabel(self)
         self.kol_1.setGeometry(QRect(260, 25, 100, 30))
         self.kol_1.setText('50 раз')
@@ -516,7 +517,7 @@ class Tr_Body(QWidget):
         self.what_1.setGeometry(QRect(10, 20, 30, 30))
         self.second = QLabel(self)
         self.second.setGeometry(QRect(75, 80, 200, 30))
-        self.second.setText('Берпи.')
+        self.second.setText('Берпи')
         self.kol_2 = QLabel(self)
         self.kol_2.setGeometry(QRect(260, 80, 100, 30))
         self.kol_2.setText('40 раз')
@@ -557,6 +558,6 @@ class Tr_Body(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = Tr_Body()
+    ex = Entry()
     ex.show()
     sys.exit(app.exec_())
