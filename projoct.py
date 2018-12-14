@@ -571,6 +571,6 @@ class Tr_Body(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = Timer()
+    ex = Entry()
     ex.show()
     sys.exit(app.exec_())
